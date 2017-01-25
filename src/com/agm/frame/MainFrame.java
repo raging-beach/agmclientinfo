@@ -1,20 +1,21 @@
 package com.agm.frame;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 
-import com.agm.gui.LoginDialog;
+import com.agm.comp.ClientInfoPanel;
+import com.agm.comp.LoginDialog;
+import com.agm.utils.Constants;
 
 public class MainFrame extends JFrame {
 
@@ -27,7 +28,7 @@ public class MainFrame extends JFrame {
 				try {
 					final MainFrame mainFrame = new MainFrame();
 					mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					
+					mainFrame.setLayout(new BorderLayout());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -52,96 +53,94 @@ public class MainFrame extends JFrame {
 		final JMenuBar menuBar = new JMenuBar();
 
 		// create menus
-		final JMenu fileMenu = new JMenu("File");
-		final JMenu editMenu = new JMenu("Edit");
-		final JMenu aboutMenu = new JMenu("About");
-		final JMenu linkMenu = new JMenu("Links");
+		final JMenu clientMenu = new JMenu("Clients");
+		final JMenu servicesMenu = new JMenu("Services");
+		final JMenu fileMenu = new JMenu("Files");
+		final JMenu logoutMenu = new JMenu("Logout");
 
 		// create menu items
-		final JMenuItem newMenuItem = new JMenuItem("New");
+		// client menu
+		final JMenuItem newMenuItem = new JMenuItem("Register New Client");
 		newMenuItem.setMnemonic(KeyEvent.VK_N);
-		newMenuItem.setActionCommand("New");
+		newMenuItem.setActionCommand(Constants.NEW_CLIENT);
+		
+		final JMenuItem manageExistingMenuItem = new JMenuItem("Manage Existing Clients");
+		manageExistingMenuItem.setActionCommand(Constants.MANAGE_CLIENT);
 
-		final JMenuItem openMenuItem = new JMenuItem("Open");
-		openMenuItem.setActionCommand("Open");
-
-		final JMenuItem saveMenuItem = new JMenuItem("Save");
-		saveMenuItem.setActionCommand("Save");
-
-		final JMenuItem exitMenuItem = new JMenuItem("Exit");
-		exitMenuItem.setActionCommand("Exit");
-
-		final JMenuItem cutMenuItem = new JMenuItem("Cut");
-		cutMenuItem.setActionCommand("Cut");
-
-		final JMenuItem copyMenuItem = new JMenuItem("Copy");
-		copyMenuItem.setActionCommand("Copy");
-
-		final JMenuItem pasteMenuItem = new JMenuItem("Paste");
-		pasteMenuItem.setActionCommand("Paste");
+		final JMenuItem uploadMenuItem = new JMenuItem("Upload");
+		uploadMenuItem.setActionCommand(Constants.UPLOAD_FILE);
+		
+		final JMenuItem downloadMenuItem = new JMenuItem("Download");
+		downloadMenuItem.setActionCommand(Constants.DOWNLOAD_FILE);
 
 		final MenuItemListener menuItemListener = new MenuItemListener();
 
 		newMenuItem.addActionListener(menuItemListener);
-		openMenuItem.addActionListener(menuItemListener);
-		saveMenuItem.addActionListener(menuItemListener);
-		exitMenuItem.addActionListener(menuItemListener);
-		cutMenuItem.addActionListener(menuItemListener);
-		copyMenuItem.addActionListener(menuItemListener);
-		pasteMenuItem.addActionListener(menuItemListener);
+		manageExistingMenuItem.addActionListener(menuItemListener);
+		uploadMenuItem.addActionListener(menuItemListener);
+		downloadMenuItem.addActionListener(menuItemListener);
 
-		final JCheckBoxMenuItem showWindowMenu = new JCheckBoxMenuItem("Show About", true);
-		showWindowMenu.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (showWindowMenu.getState()) {
-					menuBar.add(aboutMenu);
-				} else {
-					menuBar.remove(aboutMenu);
-				}
-			}
-		});
-
-		final JRadioButtonMenuItem showLinksMenu = new JRadioButtonMenuItem("Show Links", true);
-		showLinksMenu.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (menuBar.getMenu(3) != null) {
-					menuBar.remove(linkMenu);
-					repaint();
-				} else {
-					menuBar.add(linkMenu);
-					repaint();
-				}
-			}
-		});
+//		final JCheckBoxMenuItem showWindowMenu = new JCheckBoxMenuItem("Show About", true);
+//		showWindowMenu.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				if (showWindowMenu.getState()) {
+//					menuBar.add(fileMenu);
+//				} else {
+//					menuBar.remove(fileMenu);
+//				}
+//			}
+//		});
+//
+//		final JRadioButtonMenuItem showLinksMenu = new JRadioButtonMenuItem("Show Links", true);
+//		showLinksMenu.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent e) {
+//				if (menuBar.getMenu(3) != null) {
+//					menuBar.remove(logoutMenu);
+//					repaint();
+//				} else {
+//					menuBar.add(logoutMenu);
+//					repaint();
+//				}
+//			}
+//		});
 
 		// add menu items to menus
-		fileMenu.add(newMenuItem);
-		fileMenu.add(openMenuItem);
-		fileMenu.add(saveMenuItem);
-		fileMenu.addSeparator();
-		fileMenu.add(showWindowMenu);
-		fileMenu.addSeparator();
-		fileMenu.add(showLinksMenu);
-		fileMenu.addSeparator();
-		fileMenu.add(exitMenuItem);
-		editMenu.add(cutMenuItem);
-		editMenu.add(copyMenuItem);
-		editMenu.add(pasteMenuItem);
+		clientMenu.add(newMenuItem);
+		clientMenu.add(manageExistingMenuItem);
+		clientMenu.addSeparator();
+//		clientMenu.add(showWindowMenu);
+//		clientMenu.addSeparator();
+//		clientMenu.add(showLinksMenu);
+//		clientMenu.addSeparator();
+		fileMenu.add(uploadMenuItem);
+		fileMenu.add(downloadMenuItem);
 
 		// add menu to menubar
+		menuBar.add(clientMenu);
+		menuBar.add(servicesMenu);
 		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
-		menuBar.add(aboutMenu);
-		menuBar.add(linkMenu);
+		menuBar.add(logoutMenu);
 
 		// add menubar to the frame
 		this.setJMenuBar(menuBar);
+		this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+                System.exit(0);
+            }
+        });
 	}
 
 	class MenuItemListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			// statusLabel.setText(e.getActionCommand()
-			// + " JMenuItem clicked.");
+			if (e.getActionCommand().equals(Constants.NEW_CLIENT)) {
+				add(new ClientInfoPanel());
+				repaint();
+			} else if (e.getActionCommand().equals(Constants.MANAGE_CLIENT)) {
+				repaint();
+			}
+			
 		}
 	}
 }

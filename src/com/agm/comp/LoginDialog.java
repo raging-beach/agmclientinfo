@@ -1,10 +1,12 @@
-package com.agm.gui;
+package com.agm.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,7 +36,7 @@ public class LoginDialog extends JDialog {
 	 * 
 	 */
 	public LoginDialog(final JFrame parent, boolean modal) {
-		super(parent, "AGM Client Info Login", modal);
+		super(parent, "AGM Client System Login", modal);
 
 		final JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
@@ -102,6 +104,14 @@ public class LoginDialog extends JDialog {
 		this.setLocationRelativeTo(null);
 		
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                e.getWindow().dispose();
+                System.exit(0);
+            }
+        });
 	}
 	
     public String getUsername() {
