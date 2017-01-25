@@ -1,7 +1,6 @@
 package com.agm.model;
 
 import java.util.Date;
-import java.util.List;
 
 public class Client {
 
@@ -16,7 +15,10 @@ public class Client {
 	private Date signedDate;
 	private String status;
 	private String businessType;
-	private List<Service> services;
+	private String createdBy;
+	private Date createdDate;
+	private String lastModBy;
+	private Date lastModDate;
 
 	public Client() {
 		super();
@@ -108,5 +110,37 @@ public class Client {
 
 	public void setBusinessType(String businessType) {
 		this.businessType = businessType;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getLastModBy() {
+		return lastModBy;
+	}
+
+	public void setLastModBy(String lastModBy) {
+		this.lastModBy = lastModBy;
+	}
+
+	public Date getLastModDate() {
+		return lastModDate;
+	}
+
+	public void setLastModDate(Date lastModDate) {
+		this.lastModDate = lastModDate;
 	}
 }
